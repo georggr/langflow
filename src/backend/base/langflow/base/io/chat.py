@@ -49,6 +49,7 @@ class ChatComponent(Component):
             },
         }
 
+    # Keep this method for backward compatibility
     def store_message(
         self,
         message: Message,
@@ -86,5 +87,9 @@ class ChatComponent(Component):
 
         self.status = message_text
         if session_id and isinstance(message, Message) and isinstance(message.text, str):
-            self.store_message(message)
+            messages = store_message(
+                message,
+                flow_id=self.graph.flow_id,
+            )
+            self.status = messages
         return message_text  # type: ignore
